@@ -2,6 +2,7 @@ import { Seo } from "../components/common/Seo";
 import { Hero } from "../sections/hero/Hero";
 import { About } from "../sections/about/About";
 import { Services } from "../sections/services/Services";
+import { Technology } from "../sections/technology/Technology";
 
 export function HomePage() {
   return (
@@ -13,6 +14,7 @@ export function HomePage() {
       <Hero />
       <About />
       <Services />
+      <Technology />
     </>
   );
 }

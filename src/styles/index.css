@@ -5,6 +5,7 @@
 @import "./hero.css";
 @import "./about.css";
 @import "./services.css";
+@import "./technology.css";
 
 @tailwind base;
 @tailwind components;
