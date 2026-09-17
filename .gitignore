@@ -11,6 +11,10 @@ dist
 .edge-about-test
 .edge-services-test
 .edge-technology-test
+.edge-process-test
+.edge-restructure-test
+.edge-cinematic-hero-test
+.edge-hero-trail-test
 module02-*.png
 about-*.png
 services-audit-*.png

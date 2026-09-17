@@ -2,12 +2,14 @@ import { useEffect } from 'react'
 import Lenis from 'lenis'
 import { gsap, ScrollTrigger } from '../../animations/gsap'
 import { prefersReducedMotion } from '../../utils/motion'
+import { setActiveLenis } from '../../utils/lenis'
 
 export function SmoothScroll({ children }) {
   useEffect(() => {
     if (prefersReducedMotion()) return undefined
 
     const lenis = new Lenis({ duration: 1.05, smoothWheel: true })
+    setActiveLenis(lenis)
     const update = (time) => lenis.raf(time * 1000)
 
     lenis.on('scroll', ScrollTrigger.update)
@@ -24,6 +26,7 @@ export function SmoothScroll({ children }) {
       window.removeEventListener('portfolio:scroll-unlock', start)
       gsap.ticker.remove(update)
       lenis.destroy()
+      setActiveLenis(null)
     }
   }, [])
 

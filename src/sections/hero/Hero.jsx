@@ -1,61 +1,32 @@
 import { useLayoutEffect, useRef } from 'react'
 import { gsap } from '../../animations/gsap'
-import { createHeroEntrance, createHeroScrollDepth } from '../../animations/heroAnimations'
+import { createHeroEntrance, createHeroInteraction } from '../../animations/heroAnimations'
 import { Container } from '../../components/layout/Container'
-import { heroData } from '../../data/heroData'
+import { heroData, heroTechnologies } from '../../data/heroData'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
-import { HeroCTA } from './HeroCTA'
 import { HeroHeading } from './HeroHeading'
 import { HeroPortrait } from './HeroPortrait'
-import { HeroRoles } from './HeroRoles'
 import { ScrollIndicator } from './ScrollIndicator'
+import { TechnologyStack } from './TechnologyStack'
 
 export function Hero() {
-  const rootRef = useRef(null)
-  const reducedMotion = useReducedMotion()
-
+  const rootRef = useRef(null); const reducedMotion = useReducedMotion()
   useLayoutEffect(() => {
-    const root = rootRef.current
-    if (!root) return undefined
-    const context = gsap.context(() => {
-      createHeroEntrance(root, reducedMotion)
-      createHeroScrollDepth(root, reducedMotion)
-      if (!reducedMotion) {
-        gsap.to(root.querySelector('.hero-scroll i'), { scaleY: 0, transformOrigin: 'bottom', duration: 1.3, repeat: -1, ease: 'power2.inOut', yoyo: true })
-      }
-    }, root)
-    return () => context.revert()
+    const root = rootRef.current; if (!root) return undefined
+    let cleanupInteraction = () => {}
+    const context = gsap.context(() => { createHeroEntrance(root, reducedMotion); cleanupInteraction = createHeroInteraction(root, reducedMotion, heroTechnologies) }, root)
+    return () => { cleanupInteraction(); context.revert() }
   }, [reducedMotion])
-
-  return (
-    <div ref={rootRef} className="hero-root">
-      <section className="hero" aria-labelledby="hero-title">
-        <Container className="hero__container">
-          <div className="hero__top">
-            <p data-hero-meta>{heroData.eyebrow}</p>
-            <p data-hero-meta><i aria-hidden="true" /> {heroData.availability}</p>
-          </div>
-
-          <HeroHeading title={heroData.title} />
-          <HeroPortrait portrait={heroData.portrait} />
-
-          <div className="hero-identity" data-hero-reveal>
-            <p>{heroData.name}</p>
-            <HeroRoles roles={heroData.roles} />
-          </div>
-
-          <div className="hero-intro" data-hero-reveal><p>{heroData.intro}</p></div>
-
-          <div className="hero-location" data-hero-reveal>
-            <div><span>Based in</span><p>{heroData.location}</p></div>
-            <div><span>Reach</span><p>{heroData.reach}</p></div>
-          </div>
-
-          <HeroCTA />
-          <ScrollIndicator />
-          <span className="hero-index" aria-hidden="true">01</span>
-        </Container>
-      </section>
-    </div>
-  )
+  return <div ref={rootRef} className="hero-root"><section className="hero" aria-labelledby="hero-title"><div className="hero-grid" aria-hidden="true" /><div className="hero-glow" aria-hidden="true" /><TechnologyStack technologies={heroTechnologies} /><Container className="hero__container">
+    <div className="hero__top" data-hero-side><p>{heroData.eyebrow}</p><p><i aria-hidden="true" /> {heroData.availability}</p></div>
+    <div className="hero-side hero-side--left" data-hero-side><strong>Web<br />Developer</strong><span>Creative coder<br />WordPress specialist</span></div>
+    <div className="hero-side hero-side--right" data-hero-side><strong>Frontend<br />Developer</strong><span>React<br />WordPress<br />Interactive web</span></div>
+    <HeroHeading title={heroData.title} />
+    <HeroPortrait portrait={heroData.portrait} />
+    <div className="hero-role" data-hero-side>Web Developer</div>
+    <div className="hero-detail hero-detail--left" data-hero-side><span>01 / Developer</span><p>Sargodha — PK</p></div>
+    <div className="hero-detail hero-detail--right" data-hero-side><span>Available for</span><p>Web projects</p></div>
+    <div className="hero-code-detail" data-hero-side aria-hidden="true"><span>const</span> developer = {'{'}<br />&nbsp;&nbsp;creative: true,<br />&nbsp;&nbsp;building: &quot;web&quot;<br />{'}'}</div>
+    <ScrollIndicator />
+  </Container></section></div>
 }

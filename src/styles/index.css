@@ -3,9 +3,7 @@
 @import "./layout.css";
 @import "./navigation.css";
 @import "./hero.css";
-@import "./about.css";
-@import "./services.css";
-@import "./technology.css";
+@import "./restructure.css";
 
 @tailwind base;
 @tailwind components;

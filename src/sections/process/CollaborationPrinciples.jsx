@@ -1,0 +1,3 @@
+export function CollaborationPrinciples({ principles }) {
+  return <section className="collaboration" aria-labelledby="collaboration-title"><div className="collaboration__intro"><h3 id="collaboration-title">Good work<br />is collaborative.</h3><p>Clear communication and regular feedback keep the project moving in the right direction from the first conversation to final delivery.</p></div><div className="collaboration__principles">{principles.map((principle) => <article key={principle.number} data-principle><div data-principle-line /><span>{principle.number}</span><h4>{principle.title}</h4><p>{principle.description}</p></article>)}</div></section>
+}
