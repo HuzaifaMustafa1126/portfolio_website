@@ -4,7 +4,7 @@ import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 
 export default [
-  { ignores: ['dist', '.edge-test', '.edge-hero-test', '.edge-about-test'] },
+  { ignores: ['dist', '.edge-test', '.edge-hero-test', '.edge-about-test', '.edge-services-test'] },
   {
     files: ['**/*.{js,jsx}'],
     languageOptions: {

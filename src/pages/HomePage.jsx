@@ -1,6 +1,7 @@
 import { Seo } from "../components/common/Seo";
 import { Hero } from "../sections/hero/Hero";
 import { About } from "../sections/about/About";
+import { Services } from "../sections/services/Services";
 
 export function HomePage() {
   return (
@@ -11,6 +12,7 @@ export function HomePage() {
       />
       <Hero />
       <About />
+      <Services />
     </>
   );
 }

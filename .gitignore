@@ -9,5 +9,7 @@ dist
 .edge-test
 .edge-hero-test
 .edge-about-test
+.edge-services-test
 module02-*.png
 about-*.png
+services-audit-*.png

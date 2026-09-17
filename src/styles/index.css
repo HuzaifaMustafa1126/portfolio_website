@@ -4,6 +4,7 @@
 @import "./navigation.css";
 @import "./hero.css";
 @import "./about.css";
+@import "./services.css";
 
 @tailwind base;
 @tailwind components;
