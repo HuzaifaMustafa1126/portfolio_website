@@ -1,0 +1,26 @@
+:root {
+  --color-canvas: #f2f0eb;
+  --color-ink: #111111;
+  --color-muted: #696863;
+  --color-accent: #c8ff2e;
+  --color-line: rgba(17, 17, 17, 0.18);
+  --color-dark: #111111;
+  --color-on-dark: #f2f0eb;
+  --font-sans: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --text-display: clamp(4rem, 12.5vw, 12rem);
+  --text-h1: clamp(3.25rem, 8vw, 8rem);
+  --text-h2: clamp(2.5rem, 5.5vw, 5.5rem);
+  --text-h3: clamp(1.75rem, 3vw, 3rem);
+  --text-body-lg: clamp(1.125rem, 1.5vw, 1.5rem);
+  --text-body: clamp(1rem, 1.05vw, 1.125rem);
+  --text-small: 0.75rem;
+  --space-xs: clamp(0.5rem, 0.5vw, 0.75rem);
+  --space-sm: clamp(1rem, 1.2vw, 1.5rem);
+  --space-md: clamp(1.5rem, 2.5vw, 3rem);
+  --space-lg: clamp(3rem, 5vw, 6rem);
+  --space-xl: clamp(5rem, 9vw, 10rem);
+  --space-section: clamp(6rem, 12vw, 14rem);
+  --gutter: clamp(1.25rem, 4vw, 5rem);
+  --container-max: 100rem;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
