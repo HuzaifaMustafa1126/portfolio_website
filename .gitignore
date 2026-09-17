@@ -7,4 +7,7 @@ dist
 *.log
 .DS_Store
 .edge-test
+.edge-hero-test
+.edge-about-test
 module02-*.png
+about-*.png

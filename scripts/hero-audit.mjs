@@ -1,18 +1,15 @@
-const targets = await fetch("http://127.0.0.1:9222/json").then((response) =>
+const targets = await fetch("http://127.0.0.1:9223/json").then((response) =>
   response.json(),
 );
 const target = targets.find(
-  (item) =>
-    item.type === "page" &&
-    (item.url === "about:blank" ||
-      item.url.startsWith("http://127.0.0.1:5173")),
+  (item) => item.type === "page" && item.url === "about:blank",
 );
 if (!target) throw new Error("No browser target available");
 
 const socket = new WebSocket(target.webSocketDebuggerUrl);
 const pending = new Map();
-let id = 0;
 const consoleErrors = [];
+let id = 0;
 
 await new Promise((resolve, reject) => {
   socket.addEventListener("open", resolve, { once: true });
@@ -51,16 +48,19 @@ const evaluate = async (expression) => {
 await send("Runtime.enable");
 await send("Page.enable");
 await send("Page.navigate", { url: "http://127.0.0.1:5173/" });
-await wait(1600);
+await wait(2400);
 
 const viewports = [
   [1920, 1080],
+  [1600, 900],
   [1440, 900],
+  [1366, 768],
   [1280, 800],
   [1024, 768],
   [768, 900],
   [430, 900],
   [390, 844],
+  [375, 812],
   [360, 800],
 ];
 const results = [];
@@ -72,59 +72,57 @@ for (const [width, height] of viewports) {
     deviceScaleFactor: 1,
     mobile: width <= 430,
   });
-  await wait(120);
+  await wait(180);
   results.push(
     await evaluate(`(() => {
-    const trigger = document.querySelector('.menu-trigger')
-    const header = document.querySelector('.site-header')
+    const heading = document.querySelector('#hero-title').getBoundingClientRect()
+    const lines = [...document.querySelectorAll('[data-hero-line]')].map((line) => line.getBoundingClientRect())
+    const portrait = document.querySelector('.hero-portrait').getBoundingClientRect()
+    const header = document.querySelector('.site-header').getBoundingClientRect()
     return {
       viewport: '${width}x${height}',
       overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
-      triggerVisible: !!trigger && trigger.getBoundingClientRect().right <= innerWidth && trigger.getBoundingClientRect().left >= 0,
-      headerWidth: Math.round(header.getBoundingClientRect().width),
+      h1Count: document.querySelectorAll('h1').length,
+      headingInside: heading.left >= -1 && heading.right <= innerWidth + 1,
+      linesInside: lines.every((line) => line.left >= -1 && line.right <= innerWidth + 1),
+      portraitInside: portrait.left >= -1 && portrait.right <= innerWidth + 1,
+      portraitLoaded: document.querySelector('[data-hero-image]').naturalWidth > 0,
+      headerVisible: header.bottom > 0,
+      heroHeight: Math.round(document.querySelector('.hero').getBoundingClientRect().height),
+      headingSize: getComputedStyle(document.querySelector('#hero-title')).fontSize,
     }
   })()`),
   );
 }
 
 await send("Emulation.setDeviceMetricsOverride", {
-  width: 390,
-  height: 844,
+  width: 1440,
+  height: 900,
   deviceScaleFactor: 1,
-  mobile: true,
+  mobile: false,
 });
-await evaluate(`document.querySelector('.menu-trigger').click()`);
-await wait(1300);
-const openState = await evaluate(`(() => ({
-  ariaExpanded: document.querySelector('.menu-trigger').getAttribute('aria-expanded'),
-  ariaHidden: document.querySelector('#fullscreen-menu').getAttribute('aria-hidden'),
-  bodyLocked: document.body.classList.contains('menu-scroll-lock'),
-  activeElement: document.activeElement?.className,
-  menuOverflow: document.querySelector('#fullscreen-menu').scrollWidth > innerWidth,
+await evaluate(
+  'window.scrollTo(0, document.querySelector(".hero").offsetHeight * 0.65)',
+);
+await wait(700);
+const scrollState = await evaluate(`(() => ({
+  pageScrolled: scrollY > 0,
+  headingTransformed: getComputedStyle(document.querySelector('[data-title-creative]')).transform !== 'none',
+  portraitTransformed: getComputedStyle(document.querySelector('[data-hero-image]')).transform !== 'none',
 }))()`);
 
-await send("Input.dispatchKeyEvent", {
-  type: "keyDown",
-  key: "Escape",
-  code: "Escape",
-  windowsVirtualKeyCode: 27,
-});
-await send("Input.dispatchKeyEvent", {
-  type: "keyUp",
-  key: "Escape",
-  code: "Escape",
-  windowsVirtualKeyCode: 27,
-});
-await wait(1100);
-const closedState = await evaluate(`(() => ({
-  ariaExpanded: document.querySelector('.menu-trigger').getAttribute('aria-expanded'),
-  ariaHidden: document.querySelector('#fullscreen-menu').getAttribute('aria-hidden'),
-  bodyLocked: document.body.classList.contains('menu-scroll-lock'),
-  focusRestored: document.activeElement === document.querySelector('.menu-trigger'),
-}))()`);
+await send("Page.navigate", { url: "http://127.0.0.1:5173/about" });
+await wait(1800);
+const remountState = await evaluate(
+  `({ h1Count: document.querySelectorAll('h1').length, heroCount: document.querySelectorAll('.hero').length })`,
+);
 
 console.log(
-  JSON.stringify({ results, openState, closedState, consoleErrors }, null, 2),
+  JSON.stringify(
+    { results, scrollState, remountState, consoleErrors },
+    null,
+    2,
+  ),
 );
 await send("Browser.close");
 socket.close();
