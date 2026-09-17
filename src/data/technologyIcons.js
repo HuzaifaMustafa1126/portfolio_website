@@ -11,6 +11,14 @@ import {
   siTailwindcss,
   siVite,
   siWordpress,
+  siNodedotjs,
+  siDocker,
+  siExpress,
+  siMongodb,
+  siNextdotjs,
+  siNpm,
+  siPostgresql,
+  siTypescript,
 } from "simple-icons";
 
 export const technologyIcons = {
@@ -25,5 +33,13 @@ export const technologyIcons = {
   git: siGit,
   github: { ...siGithub, hex: "F4F4F2" },
   vite: siVite,
+  node: siNodedotjs,
   mysql: siMysql,
+  express: { ...siExpress, hex: "F4F4F2" },
+  typescript: siTypescript,
+  nextjs: { ...siNextdotjs, hex: "F4F4F2" },
+  mongodb: siMongodb,
+  postgresql: siPostgresql,
+  npm: siNpm,
+  docker: siDocker,
 };
