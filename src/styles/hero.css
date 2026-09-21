@@ -97,9 +97,9 @@
 }
 .hero-heading {
   position: absolute;
-  z-index: 5;
+  z-index: 8;
   right: 0;
-  bottom: clamp(4.8rem, 8vh, 7rem);
+  bottom: clamp(8.5rem, 15vh, 11rem);
   left: 0;
   display: flex;
   justify-content: space-between;
@@ -114,10 +114,41 @@
 }
 .hero-heading__mask {
   display: block;
-  overflow: hidden;
+  overflow: visible;
 }
-.hero-heading__mask > span {
+.hero-heading__word {
   display: block;
+  white-space: nowrap;
+  will-change: transform;
+}
+.hero-heading__char-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+.hero-heading__char {
+  position: relative;
+  display: inline-block;
+  transform-origin: center bottom;
+}
+.hero-heading__char::after {
+  position: absolute;
+  inset: 0;
+  color: inherit;
+  content: attr(data-letter);
+  opacity: 0;
+  pointer-events: none;
+}
+.hero-heading--distort .hero-heading__char::after {
+  clip-path: inset(38% 0 37% 0);
+  opacity: 0.7;
+  transform: translateX(0.035em) skewX(-10deg) scaleX(1.06);
+}
+.hero-heading--distort
+  .hero-heading__char-mask:nth-child(even)
+  .hero-heading__char::after {
+  clip-path: inset(62% 0 16% 0);
+  transform: translateX(-0.045em) skewX(8deg) scaleX(0.96);
 }
 .hero-heading__name--first {
   text-align: left;
@@ -131,7 +162,7 @@
   bottom: 0;
   left: 50%;
   width: min(38vw, 32rem);
-  height: min(72vh, 48rem);
+  height: min(80vh, 54rem);
   margin: 0;
   transform: translateX(-50%);
   transform-origin: center bottom;

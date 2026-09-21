@@ -3,7 +3,7 @@ import portrait from "../assets/images/hero-portrait-placeholder.jpg";
 export const heroData = {
   eyebrow: "Design × Development × Interaction",
   name: "Malik Huzaifa",
-  title: ["Malik", "Huzaifa"],
+  title: ["Huzaifa", "Mustafa"],
   intro:
     "I build high-performance websites, custom web applications and business systems — from interface to production.",
   location: "Pakistan",
